@@ -1,10 +1,10 @@
-=== WooCommerce Extended Coupon Features FREE ===
-Contributors: josk79
+=== WooCommerce Extended Coupon Features - Disallow Active Subscribers ===
+Contributors: scott.deluzio
 Tags: woocommerce, coupons, discount
 Requires at least: 4.9
 Requires PHP: 5.6
-Tested up to: 5.6.2
-Stable tag: 3.2.7
+Tested up to: 5.7.2
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,7 +12,7 @@ Additional functionality for WooCommerce Coupons: Allow discounts to be automati
 
 == Description ==
 
-"WooCommerce Extended Coupon Features" adds functionality to the WooCommerce coupons and allows for automatic discount rules. 
+"WooCommerce Extended Coupon Features" adds functionality to the WooCommerce coupons and allows for automatic discount rules.
 Very easy to use, the functionality is conveniently integrated to the WooCommerce Edit Coupon panel.
 
 Requires:
@@ -41,7 +41,7 @@ For more information or the PRO version please visit [www.soft79.nl](http://www.
 
 = Example: Auto coupon =
 
-Let the customer have a discount of $ 5.00 when the cart reaches $ 50.00. 
+Let the customer have a discount of $ 5.00 when the cart reaches $ 50.00.
 
 1. Create a coupon, let's name it *auto_50bucks* and enter a short description e.g. *$ 50.00 order discount*
 2. On the General tab: Select discount type *Cart discount*, and set the coupon amount to $ 5.00
@@ -266,7 +266,7 @@ On the settings page (Settings > WooCommerce Extended Coupon Features) check the
 * (PRO) FIX: Free products: Respect "sold individually" when adding free products to the cart
 * (PRO) FIX: Free products: WC2.6 compatibility (product->get_status())
 
-= 2.5.5.1 = 
+= 2.5.5.1 =
 *Release Date - 2017-11-07*
 * (PRO) FIX: 'Limit discount to' not applied correctly in combination with WC3.2.3
 
@@ -350,20 +350,20 @@ On the settings page (Settings > WooCommerce Extended Coupon Features) check the
 * FIX: WooCommerce 3.0.0 Compatibility
 * INTERNAL: Also load textdomain from WP_LANG_DIR/woocommerce-jos-autocoupon/woocommerce-jos-autocoupon-LOCALE.mo
 
-= 2.3.7.5 = 
+= 2.3.7.5 =
 * FIX: Limit usage to cheapest discounting the wrong product when the quantity of cheapest product was greater than 1.
 
-= 2.3.7.4 = 
+= 2.3.7.4 =
 * FIX: Combining add-to-cart and apply_coupon in a single querystring
 
-= 2.3.7.3 = 
+= 2.3.7.3 =
 * FIX: Invalid usage of get_plugin_data
 
-= 2.3.7.2 = 
+= 2.3.7.2 =
 * FIX: Backwards compatibility with WooCommerce < 2.5.0
 * INTERNAL: Introducing WJECF_WC() to maintain backwards compatibility
 
-= 2.3.7.1 = 
+= 2.3.7.1 =
 * (PRO) FIX: Bug in 'Limit discount to'
 
 = 2.3.7 =
@@ -476,13 +476,13 @@ On the settings page (Settings > WooCommerce Extended Coupon Features) check the
 * FILTER: Filter wjecf_coupon_has_a_value (An auto coupon will not be applied if this returns false)
 * FILTER: Filter wjecf_coupon_can_be_applied (An auto coupon will not be applied if this returns false)
 * INTERNAL: db_version tracking for automatic updates
-* INTERNAL: Consistent use of wjecf prefix. 
+* INTERNAL: Consistent use of wjecf prefix.
 * INTERNAL: Renamed meta_key woocommerce-jos-autocoupon to _wjecf_is_auto_coupon
 
 = 2.0.0 =
 * RENAME: Renamed plugin from "WooCommerce auto added coupons" to "WooCommerce Extended Coupon Features"
 * FEATURE: Restrict coupons by payment method
-* FEATURE: Restrict coupons by shipping method	
+* FEATURE: Restrict coupons by shipping method
 * FEATURE: Use AND-operator for the selected products (default is OR)
 * FIX: Validate email restrictions for auto coupons
 * Norwegian translation added (Thanks to Anders Zorensen)
@@ -496,7 +496,7 @@ On the settings page (Settings > WooCommerce Extended Coupon Features) check the
 * Included translations: Dutch, German, Spanish (Thanks to stephan.sperling for the german translation)
 
 = 1.1.3.1 =
-* FIX: Apply auto coupon if discount is 0.00 and free shipping is ticked	
+* FIX: Apply auto coupon if discount is 0.00 and free shipping is ticked
 
 = 1.1.3 =
 * Don't apply coupon if the discount is 0.00

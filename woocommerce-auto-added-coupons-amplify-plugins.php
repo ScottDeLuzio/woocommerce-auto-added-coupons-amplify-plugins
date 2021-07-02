@@ -1,14 +1,18 @@
 <?php
 /**
- * Plugin Name: WooCommerce Extended Coupon Features FREE
- * Plugin URI: http://www.soft79.nl
+ * Plugin Name: WooCommerce Extended Coupon Features - Disallow Active Subscribers
+ * Plugin URI: http://amplifyplugins.com
  * Description: Additional functionality for WooCommerce Coupons.
- * Version: 3.2.7
+ * Version: 1.0.0
  * Text Domain: woocommerce-jos-autocoupon
- * Author: Soft79
+ * Author: Scott DeLuzio
  * License: GPL2
  * WC requires at least: 3.0.0
- * WC tested up to: 5.0.0
+ * WC tested up to: 5.4.1
+ */
+
+/**
+ * Forked from original version by Soft79 https://wordpress.org/plugins/woocommerce-auto-added-coupons/
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -16,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'WJECF_VERSION' ) ) {
-	define( 'WJECF_VERSION', '3.2.7' );
+	define( 'WJECF_VERSION', '1.0.0' );
 }
 
 // NOTE: This file must be compatible with old PHP versions. All other files can be PHP 5.6+ .

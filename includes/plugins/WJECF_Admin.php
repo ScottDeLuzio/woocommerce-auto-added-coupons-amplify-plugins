@@ -436,6 +436,21 @@ if ( defined( 'ABSPATH' ) && ! class_exists( 'WJECF_Admin' ) ) {
 				<?php echo WJECF_Admin_Html::wc_help_tip( __( 'These User Roles will be specifically excluded from using this coupon.', 'woocommerce-jos-autocoupon' ) ); ?>
 			</p>
 			<?php
+
+			//=============================
+			// Exclude if user has an active subscription.
+			if ( class_exists( 'WC_Subscriptions' ) ) { // If the class does not exist, then WC Subscriptions is not active on the site.
+				woocommerce_wp_checkbox(
+					array(
+						'id'          => '_wjecf_disallow_active_subscribers',
+						'label'       => __( 'Disallow Active Subscribers', 'woocommerce-jos-autocoupon' ),
+						'description' => __( 'Check this box to prevent customers with an active subscription from using this coupon.', 'woocommerce-jos-autocoupon' ),
+					)
+				);
+			}
+			?>
+
+			<?php
 		}
 
 		/**
@@ -466,6 +481,7 @@ if ( defined( 'ABSPATH' ) && ! class_exists( 'WJECF_Admin' ) ) {
 				//3.2.0
 				'_wjecf_shipping_restrictions'          => 'clean',
 				'_wjecf_excluded_shipping_restrictions' => 'clean',
+				'_wjecf_disallow_active_subscribers'	=> 'yesno',
 			);
 
 			//Espagueti
