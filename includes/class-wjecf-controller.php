@@ -662,28 +662,29 @@ class WJECF_Controller {
 		//============================
 		//Test if customer is an active subscriber.
 		if ( function_exists( 'wcs_get_users_subscriptions' ) ) { // If function does not exist, then WC Subscriptions is not active on the site.
-			$coupon_disallow_subscribers = $this->get_coupon_disallow_active_subscribers( $coupon );
-			if ( $coupon_disallow_subscribers ) {
-				/**
-				 * wcs_user_has_subscription() parameters:
-				 * $user_id (optional) WC Subscriptions handles this with get_current_user_id() if $user_id = 0. Let it handle retrieving the user ID. Default: 0
-				 * $product_id (optional) The ID of a product in the store. If left empty, the function will see if the user has a subscription for any product. Default: ''
-				 * $status (optional) A valid subscription status string or array. If left empty, the function will see if the user has a subscription of any status.
-				 * 	Valid subscription status options include: pending, active, on-hold, pending-cancel, cancelled, or expired. Be aware that custom subscription statuses may also be present.
-				 */
-				$user_subscriptions = wcs_user_has_subscription( 0, '', 'active' );
+			$subscription_statuses = array( 'pending', 'active', 'on-hold', 'pending-cancel', 'cancelled', 'expired' );
+			foreach ( $subscription_statuses as $status ) {
+				$coupon_disallow_subscribers = $this->get_coupon_disallow_subscribers( $coupon, $status );
+				if ( $coupon_disallow_subscribers ) {
+					/**
+					 * wcs_user_has_subscription() parameters:
+					 * $user_id (optional) WC Subscriptions handles this with get_current_user_id() if $user_id = 0. Let it handle retrieving the user ID. Default: 0
+					 * $product_id (optional) The ID of a product in the store. If left empty, the function will see if the user has a subscription for any product. Default: ''
+					 * $status (optional) A valid subscription status string or array. If left empty, the function will see if the user has a subscription of any status.
+					 * 	Valid subscription status options include: pending, active, on-hold, pending-cancel, cancelled, or expired. Be aware that custom subscription statuses may also be present.
+					 */
+					$user_has_disallowed_subscription = wcs_user_has_subscription( 0, '', $status );
 
-				if ( $user_subscriptions ) {
-					throw new Exception(
-						/* translators: 1: coupon code */
-						sprintf( __( 'Sorry, the coupon "%s" is not valid for customers with an active subscription.', 'woocommerce-jos-autocoupon' ), $coupon->get_code() ),
-						self::E_WC_COUPON_NOT_FOR_THIS_USER
-					);
+					if ( $user_has_disallowed_subscription ) {
+						throw new Exception(
+							/* translators: 1: coupon code */
+							sprintf( __( 'Sorry, the coupon "%s" is not valid for customers with %s subscriptions.', 'woocommerce-jos-autocoupon' ), $coupon->get_code(), $status ),
+							self::E_WC_COUPON_NOT_FOR_THIS_USER
+						);
+					}
 				}
-				update_option( 'test_subs', $user_subscriptions );
 			}
 		}
-
 	}
 
 	/**
@@ -903,13 +904,14 @@ class WJECF_Controller {
 	}
 
 	/**
-	 * Get the disallowed active subscriber status.
+	 * Get the disallowed subscriber status.
 	 * @param  WC_Coupon|string $coupon The coupon code or a WC_Coupon object
-	 * @return bool true: active subscribers are excluded | false: active subscribers are not excluded
+	 * @param  string $status The status we are checking against
+	 * @return bool true: subscribers are excluded | false: subscribers are not excluded
 	 */
-	public function get_coupon_disallow_active_subscribers( $coupon ) {
-		$coupon = WJECF_WC()->get_coupon( $coupon );
-		$v      = $coupon->get_meta( '_wjecf_disallow_active_subscribers' );
+	public function get_coupon_disallow_subscribers( $coupon, $status = 'active' ) {
+		$coupon		= WJECF_WC()->get_coupon( $coupon );
+		$v			= $coupon->get_meta( '_wjecf_disallow_' . $status . '_subscribers' );
 		switch ( $v ) {
 			case 'yes':
 				$disallow = true;

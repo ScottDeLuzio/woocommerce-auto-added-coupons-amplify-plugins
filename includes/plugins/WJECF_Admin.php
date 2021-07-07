@@ -22,7 +22,6 @@ if ( defined( 'ABSPATH' ) && ! class_exists( 'WJECF_Admin' ) ) {
 			add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 
 			//Admin hooks
-			add_filter( 'plugin_row_meta', array( $this, 'wjecf_plugin_meta' ), 10, 2 );
 			add_action( 'admin_head', array( $this, 'on_admin_head' ) );
 
 			add_filter( 'woocommerce_coupon_data_tabs', array( $this, 'admin_coupon_options_tabs' ), 20, 1 );
@@ -152,15 +151,6 @@ if ( defined( 'ABSPATH' ) && ! class_exists( 'WJECF_Admin' ) ) {
 
 		public function admin_coupon_data_footer() {
 			$documentation_url = WJECF()->plugin_url( 'docs/index.html' );
-			if ( ! WJECF()->is_pro() ) {
-				$documentation_url = self::URL_DOCUMENTATION;
-
-				echo '<h3>' . __( 'Do you like WooCommerce Extended Coupon Features?', 'woocommerce-jos-autocoupon' ) . '</h3>';
-				echo '<p>' . esc_html( __( 'You will love the PRO version!', 'woocommerce-jos-autocoupon' ) ) . '</p>';
-				echo '<a id="wjecf_pro_button" href="' . self::URL_PURCHASE_PRO . '" target="_blank" class="button button-primary">';
-				echo esc_html( __( 'Get the PRO version', 'woocommerce-jos-autocoupon' ) );
-				echo '</a><br></p>';
-			}
 			echo '<h3>' . __( 'Documentation', 'woocommerce-jos-autocoupon' ) . '</h3>';
 			echo '<p><a href="' . $documentation_url . '" target="_blank">' .
 			__( 'WooCommerce Extended Coupon Features Documentation', 'woocommerce-jos-autocoupon' ) . '</a></p>';
@@ -438,15 +428,18 @@ if ( defined( 'ABSPATH' ) && ! class_exists( 'WJECF_Admin' ) ) {
 			<?php
 
 			//=============================
-			// Exclude if user has an active subscription.
+			// Exclude if user has subscriptions.
 			if ( class_exists( 'WC_Subscriptions' ) ) { // If the class does not exist, then WC Subscriptions is not active on the site.
-				woocommerce_wp_checkbox(
-					array(
-						'id'          => '_wjecf_disallow_active_subscribers',
-						'label'       => __( 'Disallow Active Subscribers', 'woocommerce-jos-autocoupon' ),
-						'description' => __( 'Check this box to prevent customers with an active subscription from using this coupon.', 'woocommerce-jos-autocoupon' ),
-					)
-				);
+				$subscription_statuses = array( 'pending', 'active', 'on-hold', 'pending-cancel', 'cancelled', 'expired' );
+				foreach ( $subscription_statuses as $status ) {
+					woocommerce_wp_checkbox(
+						array(
+							'id'          => '_wjecf_disallow_' . $status . '_subscribers',
+							'label'       => sprintf( __( 'Disallow customers with <strong>%s</strong> subscriptions', 'woocommerce-jos-autocoupon' ), $status ),
+							'description' => sprintf( __( 'Check this box to prevent customers with <code>%s</code> subscriptions from using this coupon.', 'woocommerce-jos-autocoupon' ), $status ),
+						)
+					);
+				}
 			}
 			?>
 
@@ -467,21 +460,27 @@ if ( defined( 'ABSPATH' ) && ! class_exists( 'WJECF_Admin' ) ) {
 		 */
 		public function admin_coupon_meta_fields( $coupon = null ) {
 			$fields = array(
-				'_wjecf_min_matching_product_qty'      => 'int',
-				'_wjecf_max_matching_product_qty'      => 'int',
-				'_wjecf_min_matching_product_subtotal' => 'decimal',
-				'_wjecf_max_matching_product_subtotal' => 'decimal',
-				'_wjecf_products_and'                  => 'yesno',
-				'_wjecf_categories_and'                => 'yesno',
-				'_wjecf_shipping_methods'              => 'clean',
-				'_wjecf_payment_methods'               => 'clean',
-				'_wjecf_customer_ids'                  => 'int,',
-				'_wjecf_customer_roles'                => 'clean',
-				'_wjecf_excluded_customer_roles'       => 'clean',
+				'_wjecf_min_matching_product_qty'      			=> 'int',
+				'_wjecf_max_matching_product_qty'      			=> 'int',
+				'_wjecf_min_matching_product_subtotal' 			=> 'decimal',
+				'_wjecf_max_matching_product_subtotal' 			=> 'decimal',
+				'_wjecf_products_and'                  			=> 'yesno',
+				'_wjecf_categories_and'                			=> 'yesno',
+				'_wjecf_shipping_methods'              			=> 'clean',
+				'_wjecf_payment_methods'               			=> 'clean',
+				'_wjecf_customer_ids'                  			=> 'int,',
+				'_wjecf_customer_roles'                			=> 'clean',
+				'_wjecf_excluded_customer_roles'       			=> 'clean',
 				//3.2.0
-				'_wjecf_shipping_restrictions'          => 'clean',
-				'_wjecf_excluded_shipping_restrictions' => 'clean',
-				'_wjecf_disallow_active_subscribers'	=> 'yesno',
+				'_wjecf_shipping_restrictions'          		=> 'clean',
+				'_wjecf_excluded_shipping_restrictions' 		=> 'clean',
+				//1.0.0 (forked version)
+				'_wjecf_disallow_pending_subscribers'			=> 'yesno',
+				'_wjecf_disallow_active_subscribers'			=> 'yesno',
+				'_wjecf_disallow_on-hold_subscribers'			=> 'yesno',
+				'_wjecf_disallow_pending-cancel_subscribers'	=> 'yesno',
+				'_wjecf_disallow_cancelled_subscribers'			=> 'yesno',
+				'_wjecf_disallow_expired_subscribers'			=> 'yesno',
 			);
 
 			//Espagueti
@@ -567,15 +566,6 @@ if ( defined( 'ABSPATH' ) && ! class_exists( 'WJECF_Admin' ) ) {
 			return WJECF()->sanitizer->sanitize( $int_array, 'int[]' );
 		}
 
-		/**
-		 * Add purchase PRO-link to plugin page
-		 */
-		function wjecf_plugin_meta( $links, $file ) {
-			if ( strpos( $file, 'woocommerce-jos-autocoupon.php' ) !== false && ! WJECF()->is_pro() ) {
-				$links = array_merge( $links, array( '<a href="' . self::URL_PURCHASE_PRO . '" title="Get the PRO version" target="_blank">Get PRO</a>' ) );
-			}
-			return $links;
-		}
 	}
 
 }

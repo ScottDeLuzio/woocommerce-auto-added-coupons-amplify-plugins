@@ -20,25 +20,6 @@ Requires:
 * PHP 5.6 or newer (7.2+ Recommended)
 * WordPress 4.9 or newer
 
-For compatibility with older versions of WooCommerce, please use "WooCommerce Extended Coupon Features" version 2.6.5.
-
-Full documentation is available at [www.soft79.nl](http://www.soft79.nl/documentation/wjecf).
-
-* *Auto coupons*: Allow coupons to be automatically added to the users cart if its restrictions are met,
-* Apply coupon via an url,
-* Restrict coupon by shipping method,
-* Restrict coupon by payment method,
-* Restrict coupon by a combination of products
-* Restrict coupon to certain customer roles
-* (PRO) Add *free products* to the customer's cart based on coupon rules
-* (PRO) Allow a cart discount to be applied based on quantity / subtotal of matching products
-* (PRO) Set Auto Coupon priorities (Useful for 'Individual Use Only'-coupons)
-* (PRO) Restrict coupon by shipping zone
-* (PRO) Allow coupon for first purchase only
-* (PRO) API to allow developers to use functions of this plugin
-
-For more information or the PRO version please visit [www.soft79.nl](http://www.soft79.nl)
-
 = Example: Auto coupon =
 
 Let the customer have a discount of $ 5.00 when the cart reaches $ 50.00.

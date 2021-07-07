@@ -2,9 +2,10 @@
 msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"Project-Id-Version: WooCommerce Extended Coupon Features FREE\n"
-"POT-Creation-Date: 2021-07-02 15:01-0700\n"
-"PO-Revision-Date: 2021-07-02 15:00-0700\n"
+"Project-Id-Version: WooCommerce Extended Coupon Features - Disallow Active "
+"Subscribers\n"
+"POT-Creation-Date: 2021-07-07 16:38-0700\n"
+"PO-Revision-Date: 2021-07-07 16:37-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -97,11 +98,10 @@ msgid "Sorry, it seems the coupon \"%s\" is not yours."
 msgstr ""
 
 #. translators: 1: coupon code
-#: includes/class-wjecf-controller.php:679
+#: includes/class-wjecf-controller.php:681
 #, php-format
 msgid ""
-"Sorry, the coupon \"%s\" is not valid for customers with an active "
-"subscription."
+"Sorry, the coupon \"%s\" is not valid for customers with %s subscriptions."
 msgstr ""
 
 #: includes/plugins/WJECF_Admin.php:13
@@ -313,14 +313,16 @@ msgstr ""
 msgid "These User Roles will be specifically excluded from using this coupon."
 msgstr ""
 
-#: includes/plugins/WJECF_Admin.php:446
-msgid "Disallow Active Subscribers"
+#: includes/plugins/WJECF_Admin.php:448
+#, php-format
+msgid "Disallow customers with <strong>%s</strong> subscriptions"
 msgstr ""
 
-#: includes/plugins/WJECF_Admin.php:447
+#: includes/plugins/WJECF_Admin.php:449
+#, php-format
 msgid ""
-"Check this box to prevent customers with an active subscription from using "
-"this coupon."
+"Check this box to prevent customers with <code>%s</code> subscriptions from "
+"using this coupon."
 msgstr ""
 
 #: includes/plugins/WJECF_Admin_Data_Update.php:9
@@ -526,12 +528,12 @@ msgid "Compatiblity with WPML."
 msgstr ""
 
 #. translators: 1: program 2: version
-#: woocommerce-auto-added-coupons-amplify-plugins.php:62
+#: woocommerce-auto-added-coupons-amplify-plugins.php:66
 #, php-format
 msgid "This plugin requires %1$s, please install it."
 msgstr ""
 
-#: woocommerce-auto-added-coupons-amplify-plugins.php:68
+#: woocommerce-auto-added-coupons-amplify-plugins.php:72
 #, php-format
 msgid ""
 "This plugin requires %1$s version %2$s or higher. You are running version "
@@ -539,17 +541,17 @@ msgid ""
 "Features prior to %4$s."
 msgstr ""
 
-#: woocommerce-auto-added-coupons-amplify-plugins.php:87
+#: woocommerce-auto-added-coupons-amplify-plugins.php:91
 msgid ""
 "Multiple instances of the plugin are detected. Please disable one of them."
 msgstr ""
 
 #. Plugin Name of the plugin/theme
-msgid "WooCommerce Extended Coupon Features FREE"
+msgid "WooCommerce Extended Coupon Features - Disallow Active Subscribers"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
-msgid "http://www.soft79.nl"
+msgid "http://amplifyplugins.com"
 msgstr ""
 
 #. Description of the plugin/theme
@@ -557,5 +559,5 @@ msgid "Additional functionality for WooCommerce Coupons."
 msgstr ""
 
 #. Author of the plugin/theme
-msgid "Soft79"
+msgid "Scott DeLuzio"
 msgstr ""
